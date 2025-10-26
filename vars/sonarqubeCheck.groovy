@@ -1,6 +1,11 @@
-def call(String toolName, String projectName, String projectKey){
-    withSonarQubeEnv(${toolName}){
-        def sonarqubeHome = tool ${toolName}
-        sh "${sonarqubeHome}/bin/sonarqube-scanner -Dsonar.projectName=${projectName} -Dsonar.projectKey=${projectKey}"
+def call(String toolName, String projectName, String projectKey) {
+    withSonarQubeEnv(toolName) {
+        def sonarHome = tool toolName
+        sh """
+            ${sonarHome}/bin/sonar-scanner \
+                -Dsonar.projectName=${projectName} \
+                -Dsonar.projectKey=${projectKey} \
+                -Dsonar.sources=.
+        """
     }
 }
